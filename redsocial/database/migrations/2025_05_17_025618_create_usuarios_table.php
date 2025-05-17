@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('usuarios', function (Blueprint $table) {
             $table->id();
             $table->string('nombre');
+            $table->string('username')->unique()->after('nombre');
             $table->string('email')->unique();
             $table->string('password');
             $table->text('bio')->nullable(); // opcional
@@ -22,6 +23,7 @@ return new class extends Migration
         });
     }
 
+    
 
     /**
      * Reverse the migrations.

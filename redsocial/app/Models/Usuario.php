@@ -2,10 +2,17 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Usuario extends Model
+class Usuario extends Authenticatable
 {
+    use HasFactory;
+
+    protected $table = 'usuarios';
+
+    protected $fillable = ['nombre', 'username', 'email', 'password'];
+
     public function posts()
     {
         return $this->hasMany(Post::class);
@@ -15,5 +22,4 @@ class Usuario extends Model
     {
         return $this->hasMany(Comentario::class);
     }
-
 }
