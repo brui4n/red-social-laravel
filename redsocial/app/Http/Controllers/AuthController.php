@@ -24,7 +24,7 @@ class AuthController extends Controller
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
-            return redirect()->route('posts.index');
+            return redirect()->route('inicio');
         }
 
         return back()->withErrors(['email' => 'Credenciales inválidas']);
@@ -48,7 +48,7 @@ class AuthController extends Controller
 
         Auth::login($usuario);
 
-        return redirect()->route('posts.index');
+        return redirect()->route('login')->with('success', '¡Registro exitoso! Inicia sesión.');
     }
 
     public function logout()
