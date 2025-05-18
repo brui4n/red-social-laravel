@@ -5,6 +5,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\ComentarioController;
 use App\Http\Controllers\AuthController;
 
+
 // Rutas de autenticación (login, registro, logout)
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
@@ -26,6 +27,10 @@ Route::get('/inicio', function () {
 
 
 
+//Ruta para la creacion de un post
+
+Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
+Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
 
 
 

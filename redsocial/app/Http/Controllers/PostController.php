@@ -6,11 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
 
-
 class PostController extends Controller
 {
-    
-
     public function index()
     {
         $posts = Post::latest()->get();
@@ -24,33 +21,38 @@ class PostController extends Controller
 
     public function store(Request $request)
     {
-        $imagenPath = null;
-        $archivoPath = null;
-        if ($request->hasFile('imagen')) {
-            $imagenPath = $request->file('imagen')->store('imagenes', 'public');
-        }
-
-        if ($request->hasFile('archivo')) {
-            $archivoPath = $request->file('archivo')->store('archivos', 'public');
-        }
-
-
-
+        // Validaciones
         $request->validate([
             'titulo' => 'required|string|max:255',
             'contenido' => 'required|string',
+            'imagen' => 'nullable|image|max:2048', // Máx 2MB
+            'archivo' => 'nullable|file|max:5120', // Máx 5MB
+            'codigo' => 'nullable|string',
+            'lenguaje' => 'nullable|string|max:50',
         ]);
 
+        // Guardar imagen si se sube
+        $imagenPath = $request->hasFile('imagen')
+            ? $request->file('imagen')->store('imagenes', 'public')
+            : null;
+
+        // Guardar archivo si se sube
+        $archivoPath = $request->hasFile('archivo')
+            ? $request->file('archivo')->store('archivos', 'public')
+            : null;
+
+        // Crear el post
         Post::create([
-            'usuario_id' => auth()->id(),
-            'contenido' => $request->contenido,
+            'usuario_id' => Auth::id(),
+            'titulo' => $request->titulo, // <-- ESTE FALTABA
+            'contenido' => $request->input('contenido'),
             'imagen' => $imagenPath,
             'archivo' => $archivoPath,
-            'codigo' => $request->codigo,
-            'lenguaje' => $request->lenguaje,
+            'codigo' => $request->input('codigo'),
+            'lenguaje' => $request->input('lenguaje'),
         ]);
 
-        return redirect()->route('posts.index')->with('success', '¡Post creado con éxito!');
+        return redirect()->route('home')->with('success', '¡Post creado con éxito! 🎉');
     }
 
     public function show($id)
