@@ -24,15 +24,30 @@ class PostController extends Controller
 
     public function store(Request $request)
     {
+        $imagenPath = null;
+        $archivoPath = null;
+        if ($request->hasFile('imagen')) {
+            $imagenPath = $request->file('imagen')->store('imagenes', 'public');
+        }
+
+        if ($request->hasFile('archivo')) {
+            $archivoPath = $request->file('archivo')->store('archivos', 'public');
+        }
+
+
+
         $request->validate([
             'titulo' => 'required|string|max:255',
             'contenido' => 'required|string',
         ]);
 
         Post::create([
-            'titulo' => $request->titulo,
+            'usuario_id' => auth()->id(),
             'contenido' => $request->contenido,
-            'usuario_id' => auth::id(),
+            'imagen' => $imagenPath,
+            'archivo' => $archivoPath,
+            'codigo' => $request->codigo,
+            'lenguaje' => $request->lenguaje,
         ]);
 
         return redirect()->route('posts.index')->with('success', '¡Post creado con éxito!');

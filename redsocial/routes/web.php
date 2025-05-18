@@ -24,6 +24,14 @@ Route::get('/inicio', function () {
     return view('inicio');
 })->middleware('auth')->name('inicio'); //nadie puede ingresar a la URL sin estar logueado
 
+
+
+
+
+
+
+
+
 // Rutas protegidas solo para usuarios autenticados
 Route::middleware(['auth'])->group(function () {
 
