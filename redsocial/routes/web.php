@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ComentarioController;
+use App\Http\Controllers\LikeController;
 use App\Http\Controllers\AuthController;
 use App\Models\Post;
 
@@ -43,8 +44,11 @@ Route::get('/posts/create', [PostController::class, 'create'])->name('posts.crea
 Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
 
 
+// Comentarios
+Route::post('/posts/{post}/comentarios', [ComentarioController::class, 'store'])->name('comentarios.store');
 
-
+// Likes
+Route::post('/posts/{post}/like', [LikeController::class, 'toggle'])->name('posts.like');
 
 
 // Rutas protegidas solo para usuarios autenticados
