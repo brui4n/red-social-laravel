@@ -21,39 +21,41 @@ class PostController extends Controller
 
     public function store(Request $request)
     {
-        // Validaciones
-        $request->validate([
-            'titulo' => 'required|string|max:255',
-            'contenido' => 'required|string',
-            'imagen' => 'nullable|image|max:2048', // Máx 2MB
-            'archivo' => 'nullable|file|max:5120', // Máx 5MB
-            'codigo' => 'nullable|string',
-            'lenguaje' => 'nullable|string|max:50',
-        ]);
+    // Validaciones
+    $request->validate([
+        'titulo' => 'required|string|max:255',
+        'contenido' => 'required|string',
+        'imagen' => 'nullable|image|max:2048', // Máx 2MB
+        'archivo' => 'nullable|file|max:5120', // Máx 5MB
+        'codigo' => 'nullable|string',
+        'lenguaje' => 'nullable|string|max:50',
+    ]);
 
-        // Guardar imagen si se sube
-        $imagenPath = $request->hasFile('imagen')
-            ? $request->file('imagen')->store('imagenes', 'public')
-            : null;
+    // Guardar imagen si se sube
+    $imagenPath = $request->hasFile('imagen')
+        ? $request->file('imagen')->store('imagenes', 'public')
+        : null;
 
-        // Guardar archivo si se sube
-        $archivoPath = $request->hasFile('archivo')
-            ? $request->file('archivo')->store('archivos', 'public')
-            : null;
+    // Guardar archivo si se sube
+    $archivoPath = $request->hasFile('archivo')
+        ? $request->file('archivo')->store('archivos', 'public')
+        : null;
 
-        // Crear el post
-        Post::create([
-            'usuario_id' => Auth::id(),
-            'titulo' => $request->titulo, // <-- ESTE FALTABA
-            'contenido' => $request->input('contenido'),
-            'imagen' => $imagenPath,
-            'archivo' => $archivoPath,
-            'codigo' => $request->input('codigo'),
-            'lenguaje' => $request->input('lenguaje'),
-        ]);
+    // Crear el post y guardarlo en la variable $post
+    $post = Post::create([
+        'usuario_id' => Auth::id(),
+        'titulo' => $request->titulo,
+        'contenido' => $request->input('contenido'),
+        'imagen' => $imagenPath,
+        'archivo' => $archivoPath,
+        'codigo' => $request->input('codigo'),
+        'lenguaje' => $request->input('lenguaje'),
+    ]);
+    // 🔁 Redirigir al inicio (donde se muestran los posts)
+    return redirect()->route('inicio')->with('success', '¡Post creado con éxito! 🎉');
 
-        return redirect()->route('home')->with('success', '¡Post creado con éxito! 🎉');
-    }
+}
+
 
     public function show($id)
     {

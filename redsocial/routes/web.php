@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ComentarioController;
 use App\Http\Controllers\AuthController;
+use App\Models\Post;
+
 
 
 // Rutas de autenticación (login, registro, logout)
@@ -22,10 +24,18 @@ Route::get('/', function () {
 
 //Ruta de inicio tras loguearse 
 Route::get('/inicio', function () {
-    return view('inicio');
-})->middleware('auth')->name('inicio'); //nadie puede ingresar a la URL sin estar logueado
+    $posts = Post::with('usuario')->latest()->get();
+    return view('inicio', compact('posts'));
+})->middleware('auth')->name('inicio');
 
+// Rutas protegidas para posts
+Route::middleware(['auth'])->group(function () {
+    Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
+    Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
+    Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
+});
 
+Route::get('/posts/{id}', [PostController::class, 'show'])->name('posts.show');
 
 //Ruta para la creacion de un post
 
