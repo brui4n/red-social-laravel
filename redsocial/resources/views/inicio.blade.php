@@ -7,6 +7,7 @@
         <p class="lead">Ya estás logueado correctamente en CodeNet.</p>
 
         <a href="{{ route('posts.create') }}" class="btn btn-primary mb-4">Crear nuevo post</a>
+        <a href="{{ route('posts.mis_posts') }}"class="btn btn-outline-info mb-4">Ver mis post</a>
 
         <form action="{{ route('logout') }}" method="POST">
             @csrf

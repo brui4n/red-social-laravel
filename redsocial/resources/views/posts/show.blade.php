@@ -78,6 +78,7 @@
                 </div>
                 <div class="text-end">
                     <button type="submit" class="btn btn-primary btn-sm">💬 Comentar</button>
+                    <a href="{{ route('inicio') }}" class="btn btn-danger mt-3">Cancelar</a>
                 </div>
             </form>
         </div>

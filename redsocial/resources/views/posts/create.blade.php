@@ -58,6 +58,7 @@
         </div>
 
         <button type="submit" class="btn btn-primary">Publicar</button>
+        <a href="{{ route('inicio') }}" class="btn btn-danger mt-3">Cancelar</a>
     </form>
 </div>
 @endsection
