@@ -29,32 +29,25 @@ Route::get('/inicio', function () {
     return view('inicio', compact('posts'));
 })->middleware('auth')->name('inicio');
 
+
 // Rutas protegidas para posts
-Route::middleware(['auth'])->group(function () {
+Route::middleware('auth')->group(function () {
+    // CRUD básico para posts
     Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
     Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
     Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
+    Route::get('/posts/{post}/edit', [PostController::class, 'edit'])->name('posts.edit');
+    Route::put('/posts/{post}', [PostController::class, 'update'])->name('posts.update');
+    Route::delete('/posts/{post}', [PostController::class, 'destroy'])->name('posts.destroy');
+
+    // Ver mis posts
+    Route::get('/mis-posts', [PostController::class, 'misPosts'])->name('posts.mis_posts');
+
+    // Comentarios y likes (relacionados a posts)
+    Route::post('/posts/{post}/comentarios', [ComentarioController::class, 'store'])->name('comentarios.store');
+    Route::post('/posts/{post}/like', [LikeController::class, 'toggle'])->name('posts.like');
 });
 
-Route::get('/posts/{id}', [PostController::class, 'show'])->name('posts.show');
+// Mostrar un post (público, sin login)
+Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
 
-//Ruta para la creacion de un post
-
-Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
-Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
-
-
-// Comentarios
-Route::post('/posts/{post}/comentarios', [ComentarioController::class, 'store'])->name('comentarios.store');
-
-// Likes
-Route::post('/posts/{post}/like', [LikeController::class, 'toggle'])->name('posts.like');
-
-
-// Rutas protegidas solo para usuarios autenticados
-Route::middleware(['auth'])->group(function () {
-
-
-
-    // Aquí otras rutas protegidas que tengas (settings, perfil, etc)
-});
