@@ -43,11 +43,13 @@ Route::middleware('auth')->group(function () {
     // Ver mis posts
     Route::get('/mis-posts', [PostController::class, 'misPosts'])->name('posts.mis_posts');
 
-    // Comentarios y likes (relacionados a posts)
     Route::post('/posts/{post}/comentarios', [ComentarioController::class, 'store'])->name('comentarios.store');
     Route::post('/posts/{post}/like', [LikeController::class, 'toggle'])->name('posts.like');
+    Route::get('/comentarios/{comentario}/editar', [ComentarioController::class, 'edit'])->name('comentarios.edit');
+    Route::put('/comentarios/{comentario}', [ComentarioController::class, 'update'])->name('comentarios.update');
+    Route::delete('/comentarios/{comentario}', [ComentarioController::class, 'destroy'])->name('comentarios.destroy');
+
 });
 
-// Mostrar un post (público, sin login)
 Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
 

@@ -63,6 +63,7 @@ class PostController extends Controller
     {
         $post = Post::with(['comentarios.usuario'])->findOrFail($id);
         return view('posts.show', compact('post'));
+        
     }
 
 //FUNCIONES NUEVAS PARA EL CRUD POSTS
