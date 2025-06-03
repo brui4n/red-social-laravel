@@ -45,8 +45,12 @@
                 <div class="card mb-2">
                     <div class="card-body">
                         @if($comentario->usuario)
-                            <p class="mb-1"><strong>{{ $comentario->usuario->name }}</strong></p>
-                        @else
+                            <div class="me-2">
+                            <img src="https://ui-avatars.com/api/?name={{ urlencode($comentario->usuario->nombre) }}&background=random&color=fff"
+                                 alt="Avatar" class="rounded-circle" width="40" height="40">
+                            </div>
+                            <p class="mb-1"><strong>{{ $comentario->usuario->username }}</strong></p>
+                        @else select * from usuarios;
                             <p class="mb-1"><strong class="text-muted">[Usuario eliminado]</strong></p>
                         @endif
 
