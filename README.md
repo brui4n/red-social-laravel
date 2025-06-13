@@ -37,33 +37,3 @@ npm run dev
 # Levantar el servidor local para pruebas
 php artisan serve
 
-
-# Cómo sincronizar tu trabajo con Git y GitHub
-
-## ¿Qué es `git pull` y por qué es importante?
-
-Imagina que tú y tus amigos tienen copias del proyecto en sus computadoras. Cada uno hace cambios en su copia local (en su PC). Pero el código que está en GitHub puede cambiar porque alguno subió cosas nuevas.
-
-**`git pull` es como decirle a tu PC: “Oye, tráeme todos los cambios nuevos que haya en GitHub para que mi copia esté al día.”**
-
----
-
-## ¿Por qué usar `git pull` antes de subir tus cambios?
-
-Si haces cambios en tu copia local y subes (`push`) sin antes actualizar tu copia con lo que hicieron los demás, puedes:
-
-- Pisarte cambios de ellos y causar conflictos.
-- Que Git te rechace el `push` porque tu copia local está "desactualizada".
-
-Entonces:
-
-1. **Haz `git pull` para traer los cambios que tus amigos hayan subido.**  
-2. **Resuelve cualquier conflicto que pueda aparecer (si hay cambios en las mismas líneas).**  
-3. **Luego haz tus cambios nuevos y súbelos con `git push`.**
-
----
-
-## Comando básico para actualizar tu copia local:
-
-```bash
-git pull origin main
