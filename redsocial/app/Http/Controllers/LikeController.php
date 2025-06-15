@@ -10,14 +10,16 @@ class LikeController extends Controller
 {
     public function toggle($postId)
     {
-        $like = Like::where('post_id', $postId)->where('usuario_id', Auth::id())->first();
+        $like = Like::where('post_id', $postId)
+                    ->where('user_id', Auth::id()) // <- CAMBIO AQUÍ
+                    ->first();
 
         if ($like) {
             $like->delete();
         } else {
             Like::create([
                 'post_id' => $postId,
-                'usuario_id' => Auth::id(),
+                'user_id' => Auth::id(), // <- CAMBIO AQUÍ
             ]);
         }
 

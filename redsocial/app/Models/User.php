@@ -19,10 +19,28 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'name',
+        'nombre',
+        'username',
         'email',
         'password',
+        'bio',
+        'avatar',
     ];
+
+        public function posts()
+    {
+        return $this->hasMany(Post::class);
+    }
+
+    public function comentarios()
+    {
+        return $this->hasMany(Comentario::class);
+    }
+
+    public function likes()
+    {
+        return $this->hasMany(Like::class);
+    }
 
     /**
      * The attributes that should be hidden for serialization.
@@ -52,7 +70,7 @@ class User extends Authenticatable
      */
     public function initials(): string
     {
-        return Str::of($this->name)
+        return Str::of($this->nombre)
             ->explode(' ')
             ->map(fn (string $name) => Str::of($name)->substr(0, 1))
             ->implode('');

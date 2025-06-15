@@ -2,39 +2,26 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Red Social - Laravel</title>
-    
-    <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Tu CSS compilado con Vite -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ config('app.name', 'Red Social') }}</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    
-    <!-- Prism CSS -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet" />
-
-    <!-- Prism core + PHP + JS + HTML -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-php.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup.min.js"></script>
-
-    <!-- Estilo base para bloques de código -->
-    <style>
-        pre {
-            background: #f5f5f5;
-            padding: 1rem;
-            border-radius: 8px;
-            overflow-x: auto;
-        }
-        code {
-            font-family: 'Courier New', Courier, monospace;
-        }
-    </style>
 </head>
-<body>
+<body class="bg-gray-100 text-gray-900 font-sans">
+    <header class="bg-white shadow">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+            <h1 class="text-xl font-bold">
+                <a href="{{ route('inicio') }}">Red Social 🔗</a>
+            </h1>
+            @auth
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <button class="text-red-600 hover:underline">Cerrar sesión</button>
+                </form>
+            @endauth
+        </div>
+    </header>
 
-    <main class="py-4">
+    <main class="max-w-4xl mx-auto py-6 px-4">
         @yield('content')
     </main>
 </body>
