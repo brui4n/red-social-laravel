@@ -27,7 +27,7 @@
             @foreach($posts as $post)
                 <div class="bg-white shadow-md rounded-xl p-5 border border-gray-200">
                     <h3 class="text-xl font-bold text-gray-900">{{ $post->titulo }}</h3>
-                    <p class="text-sm text-gray-500 mb-2">Publicado por <span class="font-medium text-gray-700">{{ $post->user->nombre ?? 'Usuario desconocido' }}</span></p>
+                    <p class="text-sm text-gray-500 mb-2">Publicado por <span class="font-medium text-gray-700">{{ $post->usuario->nombre ?? 'Usuario desconocido' }}</span></p>
                     <p class="text-gray-700 mb-4">{{ Str::limit($post->contenido, 120) }}</p>
 
                     @if($post->imagen)

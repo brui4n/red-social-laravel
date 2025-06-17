@@ -29,9 +29,10 @@
                 @csrf
                 <button type="submit"
                         class="bg-blue-100 text-blue-700 px-4 py-1 rounded-full hover:bg-blue-200 transition">
-                    👍 {{ $post->likes->count() }} Me gusta
+                    👍 {{ $post->users_liked->count() }} {{ Str::plural('Me gusta', $post->users_liked->count()) }}
                 </button>
             </form>
+
 
             <button onclick="copiarEnlace()"
                     class="bg-green-100 text-green-700 px-4 py-1 rounded-full hover:bg-green-200 transition">
