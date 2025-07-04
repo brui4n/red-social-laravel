@@ -3,22 +3,20 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Like;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Post;
 
 class LikeController extends Controller
 {
     public function toggle($postId)
     {
-        $like = Like::where('post_id', $postId)->where('usuario_id', Auth::id())->first();
+        $user = Auth::user();
+        $post = Post::findOrFail($postId);
 
-        if ($like) {
-            $like->delete();
+        if ($user->liked_posts()->where('post_id', $postId)->exists()) {
+            $user->liked_posts()->detach($postId);
         } else {
-            Like::create([
-                'post_id' => $postId,
-                'usuario_id' => Auth::id(),
-            ]);
+            $user->liked_posts()->attach($postId);
         }
 
         return redirect()->back();

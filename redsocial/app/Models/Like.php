@@ -2,22 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 
-class Like extends Model
+class Like extends Pivot
 {
-    use HasFactory;
-
-    protected $fillable = ['post_id', 'usuario_id'];
-
-    public function post()
-    {
-        return $this->belongsTo(Post::class);
-    }
-
-    public function usuario()
-    {
-        return $this->belongsTo(Usuario::class);
-    }
+    
 }

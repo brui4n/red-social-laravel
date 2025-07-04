@@ -11,7 +11,7 @@ class Comentario extends Model
 
     protected $fillable = [
         'post_id',
-        'usuario_id',
+        'user_id',
         'contenido',
     ];
 
@@ -20,9 +20,9 @@ class Comentario extends Model
         return $this->belongsTo(Post::class);
     }
 
-    public function usuario()
+    public function user()
     {
-        return $this->belongsTo(Usuario::class, 'usuario_id');
+        return $this->belongsTo(User::class);
     }
-
 }
+

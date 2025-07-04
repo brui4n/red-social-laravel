@@ -10,7 +10,7 @@ class Post extends Model
     use HasFactory;
 
     protected $fillable = [
-        'usuario_id',
+        'user_id',
         'titulo',
         'contenido',
         'imagen',
@@ -18,22 +18,19 @@ class Post extends Model
         'codigo',
         'lenguaje',
     ];
-    
+
     public function usuario()
     {
-        return $this->belongsTo(Usuario::class);
+        return $this->belongsTo(User::class);
     }
 
     public function comentarios()
     {
         return $this->hasMany(Comentario::class);
-        
     }
-    public function likes()
+
+    public function users_liked()
     {
-    return $this->hasMany(Like::class);
-    
+        return $this->belongsToMany(User::class, 'likes')->withTimestamps();
     }
-
-
 }

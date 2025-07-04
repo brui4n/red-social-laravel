@@ -37,3 +37,5 @@ npm run dev
 # Levantar el servidor local para pruebas
 php artisan serve
 
+# Crear el directorio donde publico donde se almacenaran las imagenes
+php artisan storage:link

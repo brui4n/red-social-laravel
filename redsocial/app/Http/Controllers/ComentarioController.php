@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
 use App\Models\Comentario;
 use App\Models\Post;
@@ -15,7 +17,7 @@ class ComentarioController extends Controller
 
         Comentario::create([
             'post_id' => $postId,
-            'usuario_id' => Auth::id(),
+            'user_id' => Auth::id(), // <- CAMBIO AQUÍ
             'contenido' => $request->contenido,
         ]);
 
@@ -53,10 +55,10 @@ class ComentarioController extends Controller
         return redirect()->back()->with('success', 'Comentario eliminado');
     }
 
-    // Verifica que el usuario actual sea el autor del comentario
+    // ✅ Verifica que el usuario actual sea el autor del comentario
     private function authorizeUser(Comentario $comentario)
     {
-        if (Auth::id() !== $comentario->usuario_id) {
+        if (Auth::id() !== $comentario->user_id) { // <- CAMBIO AQUÍ
             abort(403, 'No tienes permisos para modificar este comentario.');
         }
     }
