@@ -73,6 +73,14 @@ Route::middleware('auth')->group(function () {
     // Likes
     Route::post('/posts/{post}/like', [LikeController::class, 'toggle'])->name('posts.like');
 
+    // Visualizar todas las notificaciones
+
+    Route::get('/notificaciones', function () {
+        $notificaciones = auth()->user()->notifications()->latest()->paginate(10);
+        return view('notificaciones.index', compact('notificaciones'));
+    })->name('notificaciones.index');
+
+
     // Marcar notificaciones como leidas
 
     Route::post('/notificaciones/marcar-leidas', function () {

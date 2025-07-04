@@ -38,6 +38,12 @@
                                         ✔ Marcar todas como leídas
                                     </button>
                                 </form>
+                                <div class="text-center mt-2">
+                                    <a href="{{ route('notificaciones.index') }}" class="text-sm text-blue-600 hover:underline">
+                                        Ver todas las notificaciones →
+                                    </a>
+                                </div>
+
 
                                 @forelse(auth()->user()->notifications->take(5) as $notification)
                                     <div class="relative group">
