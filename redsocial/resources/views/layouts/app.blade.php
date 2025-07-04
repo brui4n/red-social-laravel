@@ -40,18 +40,33 @@
                                 </form>
 
                                 @forelse(auth()->user()->notifications->take(5) as $notification)
-                                    <a href="{{ route('posts.show', $notification->data['post_id']) }}"
-                                    class="block text-sm text-gray-800 border-b border-gray-200 py-2 hover:bg-gray-100 transition">
-                                        <strong>{{ $notification->data['usuario_comentario'] ?? 'Alguien' }}</strong>
-                                        comentó tu post:
-                                        <br>
-                                        <span class="text-gray-600">
-                                            {{ $notification->data['mensaje'] ?? 'Tienes una nueva notificación' }}
-                                        </span>
-                                    </a>
+                                    <div class="relative group">
+                                        {{-- Botón de eliminar (solo visible al pasar el mouse) --}}
+                                        <form method="POST" action="{{ route('notificaciones.eliminar', $notification->id) }}"
+                                            class="absolute top-1 right-1 hidden group-hover:block">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="text-red-500 text-xs hover:text-red-700">❌</button>
+                                        </form>
+
+                                        {{-- Contenido de la notificación --}}
+                                        <a href="{{ route('posts.show', $notification->data['post_id']) }}"
+                                            class="block text-sm text-gray-800 border-b border-gray-200 py-2 hover:bg-gray-100 transition pr-6">
+                                            <strong>
+                                                {{ $notification->data['usuario_comentario'] ?? $notification->data['usuario_like'] ?? 'Alguien' }}
+                                            </strong>
+                                            {{ isset($notification->data['usuario_comentario']) ? 'comentó tu post:' : 'le dio like a tu post.' }}
+                                            <br>
+                                            <span class="text-gray-600">
+                                                {{ $notification->data['mensaje'] ?? 'Tienes una nueva notificación' }}
+                                            </span>
+                                        </a>
+                                    </div>
                                 @empty
                                     <p class="text-sm text-gray-500">Sin notificaciones.</p>
                                 @endforelse
+
+
 
 
                             </div>

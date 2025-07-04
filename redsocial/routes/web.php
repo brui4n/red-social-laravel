@@ -80,6 +80,15 @@ Route::middleware('auth')->group(function () {
         return back();
     })->name('notificaciones.marcarLeidas');
 
+    // Eliminar notificaciones 
+
+    Route::delete('/notificaciones/{id}', function ($id) {
+        $notificacion = auth()->user()->notifications()->findOrFail($id);
+        $notificacion->delete();
+        return back();
+    })->name('notificaciones.eliminar');
+
+
 });
 
 
