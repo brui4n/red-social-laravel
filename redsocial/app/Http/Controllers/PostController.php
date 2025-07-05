@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
@@ -37,17 +38,15 @@ class PostController extends Controller
         $archivoPath = $request->hasFile('archivo')
             ? $request->file('archivo')->store('archivos', 'public')
             : null;
-
         $post = Post::create([
-            'user_id' => Auth::id(),
-            'titulo' => $request->titulo,
-            'contenido' => $request->input('contenido'),
-            'imagen' => $imagenPath,
-            'archivo' => $archivoPath,
-            'codigo' => $request->input('codigo'),
-            'lenguaje' => $request->input('lenguaje'),
+        'user_id' => Auth::id(),
+        'titulo' => $request->titulo,
+        'contenido' => $request->input('contenido'),
+        'imagen' => $imagenPath,
+        'archivo' => $archivoPath,
+        'codigo' => $request->input('codigo'),
+        'lenguaje' => $request->input('lenguaje'),
         ]);
-
         return redirect()->route('inicio')->with('success', '¡Post creado con éxito! 🎉');
     }
 

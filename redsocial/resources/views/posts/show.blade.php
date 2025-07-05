@@ -33,7 +33,6 @@
                 </button>
             </form>
 
-
             <button onclick="copiarEnlace()"
                     class="bg-green-100 text-green-700 px-4 py-1 rounded-full hover:bg-green-200 transition">
                 📤 Compartir
@@ -50,10 +49,18 @@
                 <div class="bg-gray-50 rounded-lg p-4 mb-3 shadow-sm border">
                     <div class="flex items-start gap-3 mb-2">
                         @if($comentario->user)
-                            <img src="https://ui-avatars.com/api/?name={{ urlencode($comentario->user->nombre) }}&background=random&color=fff"
-                                 alt="Avatar" class="w-10 h-10 rounded-full">
+                            <img src="{{ $comentario->user->avatar 
+                                        ? asset('storage/' . $comentario->user->avatar) 
+                                        : 'https://ui-avatars.com/api/?name=' . urlencode($comentario->user->nombre) . '&background=random&color=fff' }}"
+                                 alt="Avatar"
+                                 class="w-10 h-10 rounded-full object-cover border border-gray-300">
+
                             <div>
-                                <p class="font-bold text-sm text-gray-700">{{ $comentario->user->username }}</p>
+                                <p class="font-bold text-sm text-gray-700">
+                                    {{ $comentario->user->nombre }}
+                                    <span class="text-gray-500 text-xs">({{ '@' . $comentario->user->username }})</span>
+                                </p>
+                                <p class="text-xs text-gray-500">{{ $comentario->created_at->diffForHumans() }}</p>
                             </div>
                         @else
                             <p class="text-sm text-gray-500">[Usuario eliminado]</p>
@@ -77,7 +84,7 @@
                     </form>
 
                     {{-- Acciones --}}
-                    @if(auth()->check() && auth()->id() === $comentario->usuario_id)
+                    @if(auth()->check() && auth()->id() === $comentario->user_id)
                         <div class="flex gap-2 mt-2" id="acciones-comentario-{{ $comentario->id }}">
                             <button class="text-yellow-600 hover:underline text-sm"
                                     onclick="mostrarFormularioEdicion({{ $comentario->id }})">✏️ Editar</button>
