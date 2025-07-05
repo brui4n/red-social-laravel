@@ -74,6 +74,13 @@ Route::middleware('auth')->group(function () {
     // Ver mis posts
     Route::get('/mis-posts', [PostController::class, 'misPosts'])->name('posts.mis_posts');
 
+    //Ver mis comentarios
+    Route::get('/mis-comentarios', [ProfileController::class, 'misComentarios'])->name('mis.comentarios');
+
+    //Ver mis "me gusta"
+    Route::get('/posts-que-me-gustaron', [ProfileController::class, 'postsQueMeGustaron'])->name('posts.que_me_gustaron');
+
+
     // Comentarios
     Route::post('/posts/{post}/comentarios', [ComentarioController::class, 'store'])->name('comentarios.store');
     Route::get('/comentarios/{comentario}/editar', [ComentarioController::class, 'edit'])->name('comentarios.edit');

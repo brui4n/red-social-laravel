@@ -110,9 +110,22 @@
         </div>
     </header>
 
-    <main class="max-w-4xl mx-auto py-6 px-4">
-        @yield('content')
+    <main class="flex justify-center gap-6 px-6 py-8 relative">
+
+        {{-- Contenido principal (posts, etc.) --}}
+        <div class="w-full max-w-4xl">
+            @yield('content')
+        </div>
+
+        {{-- Panel lateral derecho (sidebar) --}}
+        @hasSection('sidebar')
+            <aside class="hidden lg:block w-64 sticky top-32 self-start">
+                @yield('sidebar')
+            </aside>
+        @endif
+
     </main>
+
     <script>
         const dropdown = document.getElementById('dropdown-notificaciones');
         const boton = document.getElementById('boton-notificaciones');

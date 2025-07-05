@@ -135,4 +135,26 @@ class ProfileController extends Controller
         return view('profile.siguiendo', compact('user', 'siguiendo'));
     }
 
+    public function postsQueMeGustaron()
+    {
+        $user = Auth::user();
+        $likedPosts = $user->liked_posts()->with('user')->latest()->paginate(10);
+
+        return view('profile.posts_que_me_gustaron', [
+            'posts' => $likedPosts
+        ]);
+    }
+
+    public function misComentarios()
+    {
+        $user = Auth::user();
+        $comentarios = $user->comentarios()->with('post')->latest()->paginate(10);
+
+        return view('profile.mis_comentarios', [
+            'comentarios' => $comentarios
+        ]);
+    }
+
+
+
 }
