@@ -4,10 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ config('app.name', 'Red Social') }}</title>
+
+    <meta name="csrf-token" content="{{ csrf_token() }}"> <!-- 👈 Faltaba este -->
     
     <link rel="stylesheet" href="/build/assets/app-BzUvF4Py.css">
-    <script src="/build/assets/app-CcSAaUhI.js" defer></script>
+    <script src="/build/assets/app-82Xx5nQG.js" defer></script>
+    
+
     <!-- @vite(['resources/css/app.css', 'resources/js/app.js']) -->
+    @auth
+        <script>
+            window.Laravel = {!! json_encode([
+                'userId' => auth()->user()->id,
+            ]) !!};
+        </script>
+    @endauth
 
 </head>
 <body class="bg-gray-100 text-gray-900 font-sans">
@@ -60,8 +71,13 @@
                                         </form>
 
                                         {{-- Contenido de la notificación --}}
+                                        @php
+                                            $esNoLeida = $notification->read_at === null;
+                                        @endphp
+
                                         <a href="{{ route('posts.show', $notification->data['post_id']) }}"
-                                            class="block text-sm text-gray-800 border-b border-gray-200 py-2 hover:bg-gray-100 transition pr-6">
+                                            class="block text-sm text-gray-800 border-b border-gray-200 py-2 hover:bg-gray-100 transition pr-6 {{ $esNoLeida ? 'bg-blue-100' : 'bg-white' }}">
+
                                             <strong>
                                                 {{ $notification->data['usuario_comentario'] ?? $notification->data['usuario_like'] ?? 'Alguien' }}
                                             </strong>

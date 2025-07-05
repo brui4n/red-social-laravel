@@ -30,6 +30,10 @@ class ComentarioController extends Controller
         // Si el usuario que comenta NO es el autor del post, le mandamos la notificación
         if ($autor && $autor->id !== Auth::id()) {
             $autor->notify(new NuevoComentario($comentario));
+
+            // ✅ Emitimos el evento después de la notificación
+            $notificacion = $autor->notifications()->latest()->first();
+            event(new \App\Events\NuevaNotificacion($notificacion, $autor->id));
         }
 
         return redirect()->back()->with('toast', 'Comentario enviado y notificación enviada al autor del post.');

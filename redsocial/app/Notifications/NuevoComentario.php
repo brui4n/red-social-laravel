@@ -6,6 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use App\Models\Comentario;
 use Illuminate\Notifications\Messages\DatabaseMessage;
+use App\Events\NuevaNotificacion;
 
 class NuevoComentario extends Notification
 {
@@ -25,6 +26,7 @@ class NuevoComentario extends Notification
 
     public function toDatabase($notifiable)
     {
+
         return [
             'mensaje' => '💬 Nuevo comentario en tu post: ' . substr($this->comentario->contenido, 0, 50),
             'comentario_id' => $this->comentario->id,
@@ -32,4 +34,5 @@ class NuevoComentario extends Notification
             'usuario_comentario' => $this->comentario->user->nombre,
         ];
     }
+
 }

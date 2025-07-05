@@ -6,6 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use App\Models\Post;
 use App\Models\User;
+use App\Events\NuevaNotificacion;
 
 class NuevoLike extends Notification
 {
@@ -27,6 +28,8 @@ class NuevoLike extends Notification
 
     public function toDatabase($notifiable)
     {
+
+
         return [
             'mensaje' => '❤️ ' . $this->user->nombre . ' le dio like a tu post.',
             'post_id' => $this->post->id,

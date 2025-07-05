@@ -21,6 +21,10 @@ class LikeController extends Controller
             // Enviar notificación al autor del post (si no es él mismo)
             if ($post->usuario->id !== $user->id) {
                 $post->usuario->notify(new NuevoLike($post, $user));
+
+                // ✅ Emitimos el evento en tiempo real
+                $notificacion = $post->usuario->notifications()->latest()->first();
+                event(new \App\Events\NuevaNotificacion($notificacion, $post->usuario->id));
             }
         }
 

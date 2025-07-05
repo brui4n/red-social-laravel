@@ -12,9 +12,13 @@
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
     <!-- Scripts -->
+
+
     <link rel="stylesheet" href="/build/assets/app-BzUvF4Py.css">
-    <script src="/build/assets/app-CcSAaUhI.js" defer></script>
-    <!-- @vite(['resources/css/app.css', 'resources/js/app.js']) --> 
+    <script src="/build/assets/app-82Xx5nQG.js" defer></script>
+    
+
+    <!-- @vite(['resources/css/app.css', 'resources/js/app.js']) -->
 
     <style>
         body {
