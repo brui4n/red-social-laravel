@@ -20,6 +20,24 @@
 </div>
 
 <div class="max-w-5xl mx-auto px-4">
+
+    {{-- Filtro por Etiqueta --}}
+    <div class="mb-4">
+        <form method="GET" action="{{ route('inicio') }}" class="flex items-center gap-2">
+            <label for="tag" class="font-semibold">Filtrar por etiqueta:</label>
+            <select name="tag" id="tag" class="border rounded px-2 py-1">
+                <option value="">Todas</option>
+                @foreach($tags as $tag)
+                    <option value="{{ $tag->id }}" {{ request('tag') == $tag->id ? 'selected' : '' }}>
+                        {{ $tag->name }}
+                    </option>
+                @endforeach
+            </select>
+            <button type="submit" class="bg-blue-500 text-white px-3 py-1 rounded">Filtrar</button>
+        </form>
+    </div>
+
+    {{-- Posts Recientes --}}
     <h2 class="text-2xl font-semibold text-gray-800 mb-4">📰 Posts recientes</h2>
 
     @if($posts->count())
@@ -30,10 +48,20 @@
                     <p class="text-sm text-gray-500 mb-2">Publicado por <span class="font-medium text-gray-700">{{ $post->usuario->nombre ?? 'Usuario desconocido' }}</span></p>
                     <p class="text-gray-700 mb-4">{{ Str::limit($post->contenido, 120) }}</p>
 
+                    {{-- Imagen si existe --}}
                     @if($post->imagen)
                         <img src="{{ asset('storage/' . $post->imagen) }}" alt="Imagen del post"
                              class="rounded-lg mb-4 max-h-48 object-cover w-full">
                     @endif
+
+                    {{-- Etiquetas del post --}}
+                    <div class="mb-4">
+                        @foreach($post->tags as $tag)
+                            <span class="bg-gray-200 text-gray-700 px-2 py-1 rounded text-xs mr-1">
+                                {{ $tag->name }}
+                            </span>
+                        @endforeach
+                    </div>
 
                     <a href="{{ route('posts.show', $post->id) }}"
                         class="inline-block bg-gray-100 hover:bg-gray-200 text-gray-800 text-sm font-medium px-4 py-2 rounded transition">👁️ Ver más</a>

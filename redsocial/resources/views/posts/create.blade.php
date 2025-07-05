@@ -20,14 +20,14 @@
 
         <div class="mb-4">
             <label for="titulo" class="block text-sm font-semibold text-gray-700">Título</label>
-            <input type="text" name="titulo" required
+            <input type="text" name="titulo" value="{{ old('titulo') }}" required
                    class="mt-1 block w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400">
         </div>
 
         <div class="mb-4">
             <label for="contenido" class="block text-sm font-semibold text-gray-700">Contenido</label>
             <textarea name="contenido" rows="4" required
-                      class="mt-1 block w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"></textarea>
+                      class="mt-1 block w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400">{{ old('contenido') }}</textarea>
         </div>
 
         <div class="mb-4">
@@ -45,22 +45,41 @@
         <div class="mb-4">
             <label for="codigo" class="block text-sm font-semibold text-gray-700">Código (opcional)</label>
             <textarea name="codigo" rows="5"
-                      class="mt-1 block w-full font-mono text-sm border border-gray-300 rounded px-4 py-2 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-400"></textarea>
+                      class="mt-1 block w-full font-mono text-sm border border-gray-300 rounded px-4 py-2 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-400">{{ old('codigo') }}</textarea>
         </div>
 
-        <div class="mb-6">
+        <div class="mb-4">
             <label for="lenguaje" class="block text-sm font-semibold text-gray-700">Lenguaje del código (opcional)</label>
             <select name="lenguaje"
                     class="mt-1 block w-full border border-gray-300 rounded px-4 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-400">
                 <option value="">Selecciona un lenguaje</option>
-                <option value="php">PHP</option>
-                <option value="javascript">JavaScript</option>
-                <option value="html">HTML</option>
-                <option value="css">CSS</option>
-                <option value="python">Python</option>
-                <option value="java">Java</option>
+                <option value="php" {{ old('lenguaje') == 'php' ? 'selected' : '' }}>PHP</option>
+                <option value="javascript" {{ old('lenguaje') == 'javascript' ? 'selected' : '' }}>JavaScript</option>
+                <option value="html" {{ old('lenguaje') == 'html' ? 'selected' : '' }}>HTML</option>
+                <option value="css" {{ old('lenguaje') == 'css' ? 'selected' : '' }}>CSS</option>
+                <option value="python" {{ old('lenguaje') == 'python' ? 'selected' : '' }}>Python</option>
+                <option value="java" {{ old('lenguaje') == 'java' ? 'selected' : '' }}>Java</option>
             </select>
         </div>
+
+        <div class="mb-4">
+            <label for="tags" class="block text-sm font-semibold text-gray-700 mb-1">Etiquetas</label>
+            
+            <div class="border border-gray-300 rounded-lg p-2 bg-white shadow-sm">
+                <select name="tags[]" id="tags" multiple
+                        class="w-full border-none focus:outline-none focus:ring-2 focus:ring-blue-400 rounded">
+                    @foreach($tags as $tag)
+                        <option value="{{ $tag->id }}" {{ (collect(old('tags', $selectedTags ?? []))->contains($tag->id)) ? 'selected' : '' }}>
+                            {{ $tag->name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
+            <p class="text-xs text-gray-500 mt-1">Puedes seleccionar una o varias etiquetas manteniendo presionada la tecla Ctrl (Cmd en Mac).</p>
+        </div>
+
+
 
         <div class="flex items-center justify-between">
             <button type="submit"
@@ -70,6 +89,7 @@
             <a href="{{ route('inicio') }}"
                class="text-red-600 hover:underline text-sm">Cancelar</a>
         </div>
+
     </form>
 </div>
 @endsection
