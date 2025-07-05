@@ -27,8 +27,11 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 
-
-
+// Mostrar perfil público
+Route::get('/perfil/{user}', [ProfileController::class, 'show'])->name('profile.show');
+// Ver seguidores y seguidos públicamente
+Route::get('/perfil/{user}/seguidores', [ProfileController::class, 'seguidores'])->name('profile.seguidores');
+Route::get('/perfil/{user}/siguiendo', [ProfileController::class, 'siguiendo'])->name('profile.siguiendo');
 /*
 |--------------------------------------------------------------------------
 | Rutas Protegidas (requieren login)
@@ -51,6 +54,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::post('/profile/{user}/toggle-follow', [ProfileController::class, 'toggleFollow'])->name('profile.toggle-follow');
 
     // CRUD de posts
     Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
