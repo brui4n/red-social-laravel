@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Models\Tag;
@@ -50,20 +51,20 @@ class PostController extends Controller
             ? $request->file('archivo')->store('archivos', 'public')
             : null;
 
-        // Crear el post
         $post = Post::create([
-            'user_id' => Auth::id(),
-            'titulo' => $request->titulo,
-            'contenido' => $request->input('contenido'),
-            'imagen' => $imagenPath,
-            'archivo' => $archivoPath,
-            'codigo' => $request->input('codigo'),
-            'lenguaje' => $request->input('lenguaje'),
+        'user_id' => Auth::id(),
+        'titulo' => $request->titulo,
+        'contenido' => $request->input('contenido'),
+        'imagen' => $imagenPath,
+        'archivo' => $archivoPath,
+        'codigo' => $request->input('codigo'),
+        'lenguaje' => $request->input('lenguaje'),
         ]);
 
-        // Sincronizar etiquetas (aquí va)
-        $post->tags()->sync($request->tags ?? []);
 
+        // Sincronizar etiquetas (De deivid)
+        $post->tags()->sync($request->tags ?? []);
+    
         return redirect()->route('inicio')->with('success', '¡Post creado con éxito! 🎉');
     }
 

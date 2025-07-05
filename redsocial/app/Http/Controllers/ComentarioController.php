@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Comentario;
 use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
+use App\Notifications\NuevoComentario;
 
 class ComentarioController extends Controller
 {
@@ -15,15 +16,29 @@ class ComentarioController extends Controller
             'contenido' => 'required|string|max:1000',
         ]);
 
-        Comentario::create([
+        // Crear el comentario
+        $comentario = Comentario::create([
             'post_id' => $postId,
-            'user_id' => Auth::id(), // <- CAMBIO AQUÍ
+            'user_id' => Auth::id(),
             'contenido' => $request->contenido,
         ]);
 
-        return redirect()->back()->with('success', 'Comentario publicado');
-    }
+        // Obtener el post y el usuario dueño del post
+        $post = Post::findOrFail($postId);
+        $autor = $post->usuario;
 
+        // Si el usuario que comenta NO es el autor del post, le mandamos la notificación
+        if ($autor && $autor->id !== Auth::id()) {
+            $autor->notify(new NuevoComentario($comentario));
+
+            // ✅ Emitimos el evento después de la notificación
+            $notificacion = $autor->notifications()->latest()->first();
+            event(new \App\Events\NuevaNotificacion($notificacion, $autor->id));
+        }
+
+        return redirect()->back()->with('toast', 'Comentario enviado y notificación enviada al autor del post.');
+
+    }
     public function edit(Comentario $comentario)
     {
         $this->authorizeUser($comentario);

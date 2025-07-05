@@ -20,12 +20,12 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
-// Login y registro personalizados
-Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
-Route::post('/login', [AuthController::class, 'login']);
-Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
-Route::post('/register', [AuthController::class, 'register']);
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+// Mostrar perfil público
+Route::get('/perfil/{user}', [ProfileController::class, 'show'])->name('profile.show');
+// Ver seguidores y seguidos públicamente
+Route::get('/perfil/{user}/seguidores', [ProfileController::class, 'seguidores'])->name('profile.seguidores');
+Route::get('/perfil/{user}/siguiendo', [ProfileController::class, 'siguiendo'])->name('profile.siguiendo');
 
 /*
 |--------------------------------------------------------------------------
@@ -60,12 +60,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::post('/profile/{user}/toggle-follow', [ProfileController::class, 'toggleFollow'])->name('profile.toggle-follow');
 
     // CRUD de posts
     Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
     Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
     Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
-    Route::get('/posts/{id}', [PostController::class, 'show'])->name('posts.show');
+    Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
     Route::get('/posts/{post}/edit', [PostController::class, 'edit'])->name('posts.edit');
     Route::put('/posts/{post}', [PostController::class, 'update'])->name('posts.update');
     Route::delete('/posts/{post}', [PostController::class, 'destroy'])->name('posts.destroy');
@@ -81,7 +82,34 @@ Route::middleware('auth')->group(function () {
 
     // Likes
     Route::post('/posts/{post}/like', [LikeController::class, 'toggle'])->name('posts.like');
+
+    // Visualizar todas las notificaciones
+
+    Route::get('/notificaciones', function () {
+        $notificaciones = auth()->user()->notifications()->latest()->paginate(10);
+        return view('notificaciones.index', compact('notificaciones'));
+    })->name('notificaciones.index');
+
+
+    // Marcar notificaciones como leidas
+
+    Route::post('/notificaciones/marcar-leidas', function () {
+        auth()->user()->unreadNotifications->markAsRead();
+        return back();
+    })->name('notificaciones.marcarLeidas');
+
+    // Eliminar notificaciones 
+
+    Route::delete('/notificaciones/{id}', function ($id) {
+        $notificacion = auth()->user()->notifications()->findOrFail($id);
+        $notificacion->delete();
+        return back();
+    })->name('notificaciones.eliminar');
+
+
 });
+
+
 
 /*
 |--------------------------------------------------------------------------
