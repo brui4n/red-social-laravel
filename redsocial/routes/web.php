@@ -7,6 +7,7 @@ use App\Http\Controllers\LikeController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProfileController;
 use App\Models\Post;
+use App\Models\Tag;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,14 +21,12 @@ Route::get('/', function () {
 })->name('home');
 
 
-
-
-
 // Mostrar perfil público
 Route::get('/perfil/{user}', [ProfileController::class, 'show'])->name('profile.show');
 // Ver seguidores y seguidos públicamente
 Route::get('/perfil/{user}/seguidores', [ProfileController::class, 'seguidores'])->name('profile.seguidores');
 Route::get('/perfil/{user}/siguiendo', [ProfileController::class, 'siguiendo'])->name('profile.siguiendo');
+
 /*
 |--------------------------------------------------------------------------
 | Rutas Protegidas (requieren login)
@@ -35,18 +34,29 @@ Route::get('/perfil/{user}/siguiendo', [ProfileController::class, 'siguiendo'])-
 */
 Route::middleware('auth')->group(function () {
 
-    // Página de inicio tras iniciar sesión
-    Route::get('/inicio', function () {
-        $posts = Post::with('usuario')->latest()->get();
-        return view('inicio', compact('posts'));
+    // Página de inicio con Filtro por Etiquetas
+    Route::get('/inicio', function (\Illuminate\Http\Request $request) {
+        $query = Post::with(['user', 'tags']);
+
+        if ($request->filled('tag')) {
+            $query->whereHas('tags', function ($q) use ($request) {
+                $q->where('tags.id', $request->tag);
+            });
+        }
+
+
+        $posts = $query->latest()->get();
+        $tags = Tag::all();
+
+        return view('inicio', compact('posts', 'tags'));
     })->name('inicio');
 
-    // Dashboard de Breeze (puedes ignorarlo si no lo usarás)
+    // Dashboard de Breeze
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->middleware(['verified'])->name('dashboard');
 
-    // CRUD de perfil (agregado por Breeze)
+    // CRUD de perfil (Breeze)
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

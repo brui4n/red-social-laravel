@@ -38,6 +38,22 @@
         </div>
 
         <div>
+            <label for="tags" class="block text-sm font-semibold text-gray-700 mb-1">Etiquetas</label>
+            <select name="tags[]" id="tags" multiple
+                    class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                @foreach($tags as $tag)
+                    <option value="{{ $tag->id }}" {{ in_array($tag->id, $selectedTags ?? []) ? 'selected' : '' }}>
+                        {{ $tag->name }}
+                    </option>
+                @endforeach
+            </select>
+            @error('tags')
+                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+            @enderror
+        </div>
+
+
+        <div>
             <label for="imagen" class="block text-sm font-semibold text-gray-700 mb-1">Imagen (opcional)</label>
             <input type="file" name="imagen" class="w-full border rounded-lg px-3 py-2">
         </div>
@@ -58,6 +74,8 @@
                 Cancelar
             </a>
         </div>
+
+
     </form>
 </div>
 @endsection

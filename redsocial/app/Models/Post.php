@@ -19,7 +19,7 @@ class Post extends Model
         'lenguaje',
     ];
 
-    public function usuario()
+    public function user()
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
@@ -33,4 +33,11 @@ class Post extends Model
     {
         return $this->belongsToMany(User::class, 'likes')->withTimestamps();
     }
+
+
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class);
+    }
 }
+
