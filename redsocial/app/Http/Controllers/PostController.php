@@ -2,21 +2,34 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Post;
+use App\Models\Tag;
 use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $posts = Post::latest()->get();
-        return view('posts.index', compact('posts'));
+        $query = Post::with('tags');
+
+        if ($request->filled('tag')) {
+            $query->whereHas('tags', function ($q) use ($request) {
+                $q->where('id', $request->tag);
+            });
+        }
+
+        $posts = $query->latest()->paginate(10);
+        $tags = Tag::all();
+
+        return view('posts.index', compact('posts', 'tags'));
     }
 
     public function create()
     {
-        return view('posts.create');
+        $tags = Tag::all();
+        return view('posts.create', compact('tags'));
     }
 
     public function store(Request $request)
@@ -39,24 +52,28 @@ class PostController extends Controller
             : null;
 
         $post = Post::create([
-            'user_id' => Auth::id(),
-            'titulo' => $request->titulo,
-            'contenido' => $request->input('contenido'),
-            'imagen' => $imagenPath,
-            'archivo' => $archivoPath,
-            'codigo' => $request->input('codigo'),
-            'lenguaje' => $request->input('lenguaje'),
+        'user_id' => Auth::id(),
+        'titulo' => $request->titulo,
+        'contenido' => $request->input('contenido'),
+        'imagen' => $imagenPath,
+        'archivo' => $archivoPath,
+        'codigo' => $request->input('codigo'),
+        'lenguaje' => $request->input('lenguaje'),
         ]);
 
+
+        // Sincronizar etiquetas (De deivid)
+        $post->tags()->sync($request->tags ?? []);
+    
         return redirect()->route('inicio')->with('success', '¡Post creado con éxito! 🎉');
     }
 
+
     public function show($id)
     {
-        $post = Post::with(['comentarios.user', 'users_liked'])->findOrFail($id);
+        $post = Post::with(['comentarios.user', 'users_liked', 'tags'])->findOrFail($id);
         return view('posts.show', compact('post'));
     }
-
 
     public function edit($id)
     {
@@ -66,7 +83,10 @@ class PostController extends Controller
             abort(403, 'No tienes permiso para editar este post.');
         }
 
-        return view('posts.edit', compact('post'));
+        $tags = Tag::all();
+        $selectedTags = $post->tags->pluck('id')->toArray();
+
+        return view('posts.edit', compact('post', 'tags', 'selectedTags'));
     }
 
     public function update(Request $request, $id)
@@ -80,6 +100,8 @@ class PostController extends Controller
         $request->validate([
             'titulo' => 'required|string|max:255',
             'contenido' => 'required|string',
+            'tags' => 'nullable|array',
+            'tags.*' => 'exists:tags,id',
         ]);
 
         $imagenPath = $post->imagen;
@@ -101,6 +123,12 @@ class PostController extends Controller
             'codigo' => $request->codigo,
             'lenguaje' => $request->lenguaje,
         ]);
+
+        if ($request->filled('tags')) {
+            $post->tags()->sync($request->tags);
+        } else {
+            $post->tags()->detach();
+        }
 
         return redirect()->route('inicio')->with('success', '¡Post actualizado!');
     }
@@ -126,6 +154,7 @@ class PostController extends Controller
             \Storage::disk('public')->delete($post->archivo);
         }
 
+        $post->tags()->detach();
         $post->delete();
 
         return redirect()->route('posts.mis_posts')->with('success', '¡Post eliminado correctamente!');

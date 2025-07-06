@@ -12,7 +12,17 @@
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
     <!-- Scripts -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+
+    <!-- Descomentar y adaptar segun el nombre de tu archivo generado en caso hayas hecho npm run build -->
+
+    <!-- <link rel="stylesheet" href="/build/assets/nombre_de_tu_archivo.css"> -->
+    <!-- <script src="/build/assets/nombre_de_tu_archivo.js" defer></script> -->
+    
+
+    <!-- Descomentar en caso estes desarrollando a la vez (npm run dev) -->
+
+    <!-- @vite(['resources/css/app.css', 'resources/js/app.js']) -->
 
     <style>
         body {
