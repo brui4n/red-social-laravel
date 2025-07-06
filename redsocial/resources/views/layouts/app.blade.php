@@ -7,25 +7,25 @@
 
     <meta name="csrf-token" content="{{ csrf_token() }}"> <!-- 👈 Faltaba este -->
     
-    <link rel="stylesheet" href="/build/assets/app-BzUvF4Py.css">
-    <script src="/build/assets/app-82Xx5nQG.js" defer></script>
+    <link rel="stylesheet" href="/build/assets/app-BqDgRO9c.css">
+    <script src="/build/assets/app-Ca-DoIXu.js" defer></script>
+    
+    <!-- Descomentar y adaptar segun el nombre de tu archivo generado en caso hayas hecho npm run build -->
+
+    <!-- <link rel="stylesheet" href="/build/assets/nombre_de_tu_archivo.css"> -->
+    <!-- <script src="/build/assets/nombre_de_tu_archivo.js" defer></script> -->
     
 
+    <!-- Descomentar en caso estes desarrollando a la vez (npm run dev) -->
+
     <!-- @vite(['resources/css/app.css', 'resources/js/app.js']) -->
-    @auth
-        <script>
-            window.Laravel = {!! json_encode([
-                'userId' => auth()->user()->id,
-            ]) !!};
-        </script>
-    @endauth
 
 </head>
 <body class="bg-gray-100 text-gray-900 font-sans">
     <header class="bg-white shadow">
         <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
             <h1 class="text-xl font-bold">
-                <a href="{{ route('inicio') }}">Red Social 🔗</a>
+                <a href="{{ route('inicio') }}">CodeNet 🔗</a>
             </h1>
             @auth
                 <div class="flex items-center gap-4">

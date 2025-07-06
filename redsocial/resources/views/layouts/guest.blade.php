@@ -14,9 +14,13 @@
     <!-- Scripts -->
 
 
-    <link rel="stylesheet" href="/build/assets/app-BzUvF4Py.css">
-    <script src="/build/assets/app-82Xx5nQG.js" defer></script>
+    <!-- Descomentar y adaptar segun el nombre de tu archivo generado en caso hayas hecho npm run build -->
+
+    <!-- <link rel="stylesheet" href="/build/assets/nombre_de_tu_archivo.css"> -->
+    <!-- <script src="/build/assets/nombre_de_tu_archivo.js" defer></script> -->
     
+
+    <!-- Descomentar en caso estes desarrollando a la vez (npm run dev) -->
 
     <!-- @vite(['resources/css/app.css', 'resources/js/app.js']) -->
 

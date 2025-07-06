@@ -25,7 +25,7 @@ class ComentarioController extends Controller
 
         // Obtener el post y el usuario dueño del post
         $post = Post::findOrFail($postId);
-        $autor = $post->usuario;
+        $autor = $post->user;
 
         // Si el usuario que comenta NO es el autor del post, le mandamos la notificación
         if ($autor && $autor->id !== Auth::id()) {
